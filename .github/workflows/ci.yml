@@ -1,12 +1,12 @@
-name: CI
+name: Security CI
 
 on:
   push:
     branches:
-      - master
+      - "master"
   pull_request:
     branches:
-      - master
+      - "master"
 
 jobs:
   build:
@@ -14,28 +14,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-
+        uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Build with Maven
-        run: mvn clean verify -B
-
-      - name: Run SpotBugs
-        run: mvn com.github.spotbugs:spotbugs-maven-plugin:spotbugs
-
+          cache: maven
+      - name: Build & Test
+        run: mvn -B clean verify
+      - name: Run SpotBugs (Static Analysis)
+        run: mvn com.github.spotbugs:spotbugs-maven-plugin:4.8.3.0:check
       - name: Run OWASP Dependency-Check
-        run: mvn org.owasp:dependency-check-maven:check
+        run: |
+          mvn org.owasp:dependency-check-maven:9.1.0:check \
+            -Dformat=ALL \
+            -DfailBuildOnCVSS=7
