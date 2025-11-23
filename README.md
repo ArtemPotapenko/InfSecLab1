@@ -15,11 +15,12 @@
 | POST  | /auth/register | Регистрация нового пользователя                |
 | POST  | /auth/login    | Авторизация, получение JWT                     |
 | GET   | /data          | Получение списка пользователей (требуется JWT) |
+
+
 Пример вызова с использованием JWT:
 
 ```bash
-curl -H "Authorization: Bearer <JWT_TOKEN>" https://example.com/api/users
-```
+curl -H "Authorization: Bearer <JWT_TOKEN>" https://localhost/data```
 
 ## Меры защиты
 
