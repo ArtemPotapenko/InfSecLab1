@@ -20,7 +20,9 @@
 Пример вызова с использованием JWT:
 
 ```bash
-curl -H "Authorization: Bearer <JWT_TOKEN>" https://localhost/data```
+curl -H "Authorization: Bearer <JWT_TOKEN>" https://localhost/data
+```
+
 
 ## Меры защиты
 
