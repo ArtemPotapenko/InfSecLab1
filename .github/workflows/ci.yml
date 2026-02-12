@@ -27,6 +27,7 @@ jobs:
       - name: Build + Test + SpotBugs + Dependency Check
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          JAVA_TOOL_OPTIONS: -Djava.util.logging.config.file=${{ github.workspace }}/.github/lucene-jul.properties
         run: |
           ./mvnw -B verify \
             spotbugs:spotbugs \
