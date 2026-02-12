@@ -18,7 +18,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <dependencyCheck.skip>true</dependencyCheck.skip>
+        <dependencyCheck.skip>false</dependencyCheck.skip>
     </properties>
 
     <dependencies>
@@ -113,7 +113,12 @@
                     <skip>${dependencyCheck.skip}</skip>
                     <autoUpdate>true</autoUpdate>
                     <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
-                    <dataDirectory>${project.build.directory}/dependency-check</dataDirectory>
+                    <dataDirectory>${project.basedir}/.dependency-check</dataDirectory>
+                    <formats>HTML,JSON,XML</formats>
+                    <versionCheckEnabled>true</versionCheckEnabled>
+                    <knownExploitedEnabled>true</knownExploitedEnabled>
+                    <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
+                    <ossindexAnalyzerEnabled>true</ossindexAnalyzerEnabled>
                 </configuration>
             </plugin>
 

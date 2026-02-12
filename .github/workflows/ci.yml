@@ -18,26 +18,26 @@ jobs:
           java-version: '21'
           cache: maven
 
-
       - name: Cache Dependency-Check Data
         uses: actions/cache@v4
         with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: depcheck-${{ runner.os }}-v1
+          path: .dependency-check
+          key: depcheck-${{ runner.os }}-v2
 
       - name: Build + Test + SpotBugs + Dependency Check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn -B verify \
+          ./mvnw -B verify \
             spotbugs:spotbugs \
-            org.owasp:dependency-check-maven:check \
-            -Dnvd.nist.cveValidForHours=168
+            org.owasp:dependency-check-maven:check
 
       - name: Upload SpotBugs report
         uses: actions/upload-artifact@v4
         with:
           name: spotbugs-report
           path: target/spotbugsXml.xml
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Upload Dependency-Check reports
         uses: actions/upload-artifact@v4
@@ -47,4 +47,4 @@ jobs:
             target/dependency-check-report.html
             target/dependency-check-report.json
             target/dependency-check-report.xml
-          if-no-files-found: warn
+          if-no-files-found: error
